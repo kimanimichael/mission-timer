@@ -6,6 +6,7 @@ if (PLATFORM STREQUAL "mbed-os")
     if (PORT STREQUAL "STM32F429ZI")
 
     endif ()
+            "fsm.cpp"
 
     target_include_directories(drivers INTERFACE
             ${CMAKE_CURRENT_SOURCE_DIR}/include/
