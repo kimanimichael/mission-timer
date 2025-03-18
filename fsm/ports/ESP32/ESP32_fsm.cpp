@@ -20,6 +20,8 @@ void Active::_post(Event const * const e) const {
 [[noreturn]] void Active::_event_loop() {
     Event e = {};
 
+    HSM::_init((Event*)nullptr);
+
     while (true) {
         if (xQueueReceive(_queue, &e, portMAX_DELAY)) {
             HSM::_dispatch(&e);

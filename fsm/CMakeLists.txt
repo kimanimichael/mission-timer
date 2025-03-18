@@ -6,7 +6,6 @@ if (PLATFORM STREQUAL "mbed-os")
     if (PORT STREQUAL "STM32F429ZI")
 
     endif ()
-            "fsm.cpp"
 
     target_include_directories(drivers INTERFACE
             ${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -17,9 +16,11 @@ if (PLATFORM STREQUAL "mbed-os")
 else ()
     idf_component_register(
             SRCS
-            "ports/ESP32/fsm.cpp"
+            "fsm.cpp"
+            "ports/ESP32/ESP32_fsm.cpp"
             INCLUDE_DIRS
             "./include"
+            "ports/ESP32/include"
             REQUIRES
             "driver"
     )
