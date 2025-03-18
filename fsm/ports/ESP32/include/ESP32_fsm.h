@@ -9,6 +9,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 #include "queue"
 typedef unsigned char  INT8U;                    /* Unsigned  8 bit quantity                           */
 
@@ -32,3 +33,22 @@ private:
 };
 
 #endif //ESP32FSM_H
+
+class TimeEvent : public Event {
+public:
+    explicit TimeEvent(Signal sig, Active *act);
+
+    void _arm(uint32_t timeout, uint32_t interval);
+
+    void _disarm();
+
+    void _tick();
+
+    Active* _act;
+    uint32_t _timeout = {};
+    uint32_t _interval = {};
+
+    static SemaphoreHandle_t _events_mutex;
+    static SemaphoreHandle_t _parameters_mutex;
+
+};

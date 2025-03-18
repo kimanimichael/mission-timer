@@ -17,7 +17,7 @@ enum ReservedSignals {
 
 class Event {
 public:
-    Signal sig; /* event signal */
+    Signal _sig; /* event signal */
     /* event parameters added in subclasses of Event */
 };
 
