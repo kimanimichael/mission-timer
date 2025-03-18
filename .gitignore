@@ -1,0 +1,5 @@
+.idea/
+cmake_build*
+cmake-build*
+sdkconfig
+external/mbed-os
