@@ -11,7 +11,11 @@ else ()
     idf_component_register(
             SRCS
             "main.cpp"
+            "../services/timebomb.cpp"
+            INCLUDE_DIRS
+            "../services/"
             REQUIRES
+            fsm
             drivers
     )
 endif ()
