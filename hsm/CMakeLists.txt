@@ -16,7 +16,7 @@ if (PLATFORM STREQUAL "mbed-os")
 else ()
     idf_component_register(
             SRCS
-            "fsm.cpp"
+            "hsm.cpp"
             "ports/ESP32/ESP32_fsm.cpp"
             INCLUDE_DIRS
             "./include"

@@ -1,5 +1,5 @@
-#ifndef FSM_H_
-#define FSM_H_
+#ifndef HSM_H_
+#define HSM_H_
 
 #include <cstdint>
 

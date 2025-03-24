@@ -1,11 +1,11 @@
-/* ESP32 custom FSM header
+/* ESP32 custom HSM header
  * Created by mikael on 3/18/25.
  */
 
-#ifndef ESP32FSM_H
-#define ESP32FSM_H
+#ifndef ESP32HSM_H
+#define ESP32HSM_H
 
-#include "fsm.h"
+#include "hsm.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/task.h"

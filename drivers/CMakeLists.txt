@@ -27,6 +27,6 @@ else ()
             "./include/actuators"
             REQUIRES
             "driver"
-            "fsm"
+            "hsm"
     )
 endif ()

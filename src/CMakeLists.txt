@@ -15,7 +15,7 @@ else ()
             INCLUDE_DIRS
             "../services/"
             REQUIRES
-            fsm
+            hsm
             drivers
     )
 endif ()

@@ -1,7 +1,7 @@
 #ifndef __BSP_H__
 #define __BSP_H__
 #include "led.h"
-#include "fsm.h"
+#include "hsm.h"
 
 namespace BSP
 {

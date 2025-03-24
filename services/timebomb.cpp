@@ -1,5 +1,5 @@
 #include "timebomb.h"
-#include "fsm.h"
+#include "hsm.h"
 #include "bsp.h"
 
 enum { blink_time = 2U };
