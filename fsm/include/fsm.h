@@ -30,8 +30,8 @@ typedef enum{TRAN_STATUS, HANDLED_STATUS, IGNORED_STATUS, INIT_STATUS, SUPER_STA
 
 typedef State(*StateHandler)(Event const * const e);
 
-#define TRAN(target_) (((HSM*)me)->state = (StateHandler)(target_), TRAN_STATUS)
-#define SUPER(super_) (((HSM*)me)->temp = (StateHandler)(super_), SUPER_STATUS)
+#define TRAN(target_) (_state = (StateHandler)(target_), TRAN_STATUS)
+#define SUPER(super_) (_temp = (StateHandler)(super_), SUPER_STATUS)
 
 class HSM {
 public:
