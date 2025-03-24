@@ -20,14 +20,19 @@ class Active: public HSM {
 public:
     explicit Active(StateHandler initial);
 
-    void _start(UBaseType_t priority);
+    void _start();
 
     void _post(Event const * e) const;
 
+    static void event_loop(void *param);
+
     [[noreturn]] void _event_loop();
-private:
+public:
     UBaseType_t _priority = {};    /* Task priority */
     QueueHandle_t _queue = {};   /* Message queue handle */
+
+private:
+    static Active* active_instance;
 
     /* active object data added in subclasses of Active */
 };
@@ -42,6 +47,8 @@ public:
 
     void _disarm();
 
+    static void tick(TimerHandle_t xTimer);
+
     void _tick();
 
     Active* _act;
@@ -50,5 +57,9 @@ public:
 
     static SemaphoreHandle_t _events_mutex;
     static SemaphoreHandle_t _parameters_mutex;
+
+    static TimeEvent* time_event_instance;
+
+    static TimeEvent* get_default_instance(Signal sig, Active *act);
 
 };
