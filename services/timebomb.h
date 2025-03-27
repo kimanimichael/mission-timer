@@ -35,6 +35,8 @@ public:
 
     State _defused(Event const * e);
 
+    static TimeBomb* get_default_instance();
+
     TimeEvent *te;
 
     uint32_t blink_ctr = {};

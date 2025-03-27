@@ -149,7 +149,7 @@ State TimeBomb::_boom(Event const * const e) {
                 printf("Enter boom\n");
                 BSP::BSP_green_led_on();
                 BSP::BSP_red_led_on();
-                // BSP::BSP_blue_led_on();
+                BSP::BSP_blue_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
@@ -199,4 +199,12 @@ State TimeBomb::_defused(Event const * const e) {
     }
     return status;
 }
+
+TimeBomb* TimeBomb::get_default_instance() {
+    static TimeBomb time_bomb;
+    return &time_bomb;
+}
+
+
+
 
