@@ -3,3 +3,5 @@ cmake_build*
 cmake-build*
 sdkconfig
 external/mbed-os
+/build
+sdkconfig.old

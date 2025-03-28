@@ -69,5 +69,3 @@ python3 build.py build-application -p STM32F429ZI -pl mbed-os --flash
 
 ## Documentation
 The documentation will be found [here](https://example.com/)
-
-
