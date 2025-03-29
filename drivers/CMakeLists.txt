@@ -25,6 +25,8 @@ else ()
             INCLUDE_DIRS
             "./include"
             "./include/actuators"
+            "ports/ESP32/"
+            "../services/"
             REQUIRES
             "driver"
             "hsm"
