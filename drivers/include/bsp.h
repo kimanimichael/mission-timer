@@ -9,6 +9,8 @@ namespace BSP
 
     void BSP_init_actuators();
 
+    void BSP_init_sensors();
+
     void BSP_LED_on();
 
     void BSP_LED_off();
@@ -28,6 +30,8 @@ namespace BSP
     void BSP_red_led_on();
 
     void BSP_red_led_off();
+
+    void BSP_button_read();
 
     /**
      * @brief blocking wait in line
