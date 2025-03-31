@@ -8,19 +8,19 @@
 #include "timebomb.h"
 
 namespace BSP{
-    void BSP_init() {
-        BSP_init_actuators();
-        BSP_init_sensors();
+    void init() {
+        init_actuators();
+        init_sensors();
     }
 
-    void BSP_init_actuators() {
+    void init_actuators() {
         get_default_onboard_led()->LED_init();
         get_blue_led()->LED_init();
         get_red_led()->LED_init();
         get_green_led()->LED_init();
     }
 
-    void BSP_init_sensors() {
+    void init_sensors() {
         gpio_set_direction(GPIO_NUM_25, GPIO_MODE_INPUT);
         gpio_set_pull_mode(GPIO_NUM_25, GPIO_PULLDOWN_ONLY);
 
@@ -29,23 +29,15 @@ namespace BSP{
     }
 
 
-    void BSP_LED_on() {
+    void onboard_led_on() {
         get_default_onboard_led()->LED_on();
     }
 
-    void BSP_LED_off() {
+    void onboard_led_off() {
         get_default_onboard_led()->LED_off();
     }
 
-    void BSP_alternate_LED_on() {
-        get_alternate_onboard_led()->LED_on();
-    }
-
-    void BSP_alternate_LED_off() {
-        get_alternate_onboard_led()->LED_off();
-    }
-
-    void BSP_delay(unsigned int ms) {
+    void delay(unsigned int ms) {
         vTaskDelay(ms/portTICK_PERIOD_MS);
     }
 
@@ -55,37 +47,32 @@ namespace BSP{
         return &led;
     }
 
-    LED* get_alternate_onboard_led() {
-        static LED led(12);
-        return &led;
-    }
-
-    void BSP_blue_led_on() {
+    void blue_led_on() {
         get_blue_led()->LED_on();
     }
 
-    void BSP_blue_led_off() {
+    void blue_led_off() {
         get_blue_led()->LED_off();
     }
 
-    void BSP_green_led_on() {
+    void green_led_on() {
         get_green_led()->LED_on();
     }
 
-    void BSP_green_led_off() {
+    void green_led_off() {
         get_green_led()->LED_off();
     }
 
 
-    void BSP_red_led_on() {
+    void red_led_on() {
         get_red_led()->LED_on();
     }
 
-    void BSP_red_led_off() {
+    void red_led_off() {
         get_red_led()->LED_off();
     }
 
-    void BSP_button_read() {
+    void trigger_buttons_read() {
         int button_status[2] = {};
 
         /* state of button. static to persist between func calls */
@@ -153,7 +140,7 @@ namespace BSP{
 
 namespace ESP_BSP
 {
-    void BSP_button_read(TimerHandle_t xTimer) {
-        BSP::BSP_button_read();
+    void button_read(TimerHandle_t xTimer) {
+        BSP::trigger_buttons_read();
     }
 }
