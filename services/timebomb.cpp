@@ -51,12 +51,12 @@ State TimeBomb::_wait_for_button(Event const * const e) {
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
-                BSP::BSP_green_led_on();
+                BSP::green_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
-                BSP::BSP_green_led_off();
+                BSP::green_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
@@ -82,14 +82,14 @@ State TimeBomb::_blink(Event const * const e) {
     switch (e->_sig) {
         case ENTRY_SIGNAL: {
                 printf("Enter blink\n");
-                BSP::BSP_red_led_on();
+                BSP::red_led_on();
                 te->_arm((blink_time), 0U);
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
                 printf("Exit blink\n");
-                BSP::BSP_red_led_off();
+                BSP::red_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
@@ -147,18 +147,18 @@ State TimeBomb::_boom(Event const * const e) {
 
         case ENTRY_SIGNAL: {
                 printf("Enter boom\n");
-                BSP::BSP_green_led_on();
-                BSP::BSP_red_led_on();
-                BSP::BSP_blue_led_on();
+                BSP::green_led_on();
+                BSP::red_led_on();
+                BSP::blue_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
 
         case EXIT_SIGNAL: {
                 printf("Exit boom\n");
-                BSP::BSP_green_led_off();
-                BSP::BSP_red_led_off();
-                BSP::BSP_blue_led_off();
+                BSP::green_led_off();
+                BSP::red_led_off();
+                BSP::blue_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
@@ -179,12 +179,12 @@ State TimeBomb::_defused(Event const * const e) {
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
-                BSP::BSP_blue_led_on();
+                BSP::blue_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
-                BSP::BSP_blue_led_off();
+                BSP::blue_led_off();
                 status = HANDLED_STATUS;
                 break;
         }

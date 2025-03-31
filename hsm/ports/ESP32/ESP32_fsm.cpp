@@ -1,6 +1,7 @@
-#include "ESP32_fsm.h"
 #include "bsp.h"
+#include "ESP32_fsm.h"
 #include "ESP32_bsp.h"
+#include "esp_log.h"
 
 #define QUEUE_LENGTH 10
 #define MAX_TIME_EVENTS 10
@@ -8,22 +9,19 @@
 #define TIMER_PERIOD_MS 100
 #define BUTTON_INTERVAL_MS 10
 
-static constexpr Event button_pressed_evt = {BUTTON_PRESSED_SIG};
+static auto TAG = "esp_fsm";
 
 static uint64_t param;
 
-void Active::_run(const Active *object) {
+void Active::_run(Active *object) {
     object->_start();
-    xTaskCreate(Active::event_loop, "TimeBomb task", 2048, &param, 1, nullptr);
-
-
-    // object->_post(&button_pressed_evt);
+    xTaskCreate(Active::event_loop, "TimeBomb task", 2048, &param, object->_priority, nullptr);
 
     if (TimerHandle_t my_timer = xTimerCreate("MyTimer", pdMS_TO_TICKS(TIMER_PERIOD_MS), pdTRUE, nullptr, TimeEvent::tick); my_timer != nullptr) {
         xTimerStart(my_timer, 0);
     }
 
-    if (TimerHandle_t button_timer = xTimerCreate("ButtonTimer", pdMS_TO_TICKS(BUTTON_INTERVAL_MS), pdTRUE, nullptr, ESP_BSP::BSP_button_read); button_timer != nullptr) {
+    if (TimerHandle_t button_timer = xTimerCreate("ButtonTimer", pdMS_TO_TICKS(BUTTON_INTERVAL_MS), pdTRUE, nullptr, ESP_BSP::button_read); button_timer != nullptr) {
         xTimerStart(button_timer, 0);
     }
 }
@@ -33,14 +31,11 @@ Active * Active::active_instance = nullptr;
 
 Active::Active(const StateHandler initial): HSM(initial) {
     active_instance = this;
-    _queue = xQueueCreate(QUEUE_LENGTH, sizeof(Event));
 }
 
-void Active::_start() const {
+void Active::_start() {
+    _queue = xQueueCreate(QUEUE_LENGTH, sizeof(Event));
     assert(_queue != nullptr);
-    if (_queue == nullptr) {
-        printf("Queue creation failed!\n");
-    }
 }
 
 void Active::_post(Event const * const e) const {
@@ -90,16 +85,19 @@ void TimeEvent::_arm(const uint32_t timeout, const uint32_t interval) {
     if (xSemaphoreTake(TimeEvent::_parameters_mutex, portMAX_DELAY)) {
         _timeout = timeout;
         _interval = interval;
+        printf("Armed successfully to %ld \n", _timeout);
+    } else {
+        ESP_LOGE(TAG, "Arming failed\n");
     }
-    l_t_evt[0] -> _timeout = timeout;
-    _timeout = timeout;
-    printf("Armed successfully to %ld \n", _timeout);
     xSemaphoreGive(TimeEvent::_parameters_mutex);
 }
 
 void TimeEvent::_disarm() {
     if (xSemaphoreTake(TimeEvent::_parameters_mutex, portMAX_DELAY)) {
         _timeout = 0U;
+        _interval = 0U;
+    } else {
+        ESP_LOGE(TAG, "Disarming failed\n");
     }
     xSemaphoreGive(TimeEvent::_parameters_mutex);
 }

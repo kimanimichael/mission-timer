@@ -13,9 +13,10 @@ extern "C" void app_main(void)
 int main()
 #endif
 {
-    BSP::BSP_init();
+    BSP::init();
 
     #ifdef ESP32
+    TimeBomb::get_default_instance()->_priority = 1;
     Active::_run(TimeBomb::get_default_instance());
     #else
     #endif
