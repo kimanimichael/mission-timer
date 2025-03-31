@@ -100,20 +100,20 @@ namespace BSP{
 
         if (tmp) { /*change of button state has occurred */
             if (button_status[0]) { /* button pressed */
-                static const Event button_pressed_event = {BUTTON_PRESSED_SIG};
+                static constexpr Event button_pressed_event = {BUTTON_PRESSED_SIG};
                 TimeBomb::get_default_instance()->_post(&button_pressed_event);
             } else { /* button released */
-                static const Event button_released_event = {BUTTON_RELEASED_SIG};
+                static constexpr Event button_released_event = {BUTTON_RELEASED_SIG};
                 TimeBomb::get_default_instance()->_post(&button_released_event);
             }
         }
 
         if (tmp2) { /*change of button 2 state has occurred */
             if (button_status[1]) { /* button 2 pressed */
-                static const Event button2_pressed_event = {BUTTON2_PRESSED_SIG};
+                static constexpr Event button2_pressed_event = {BUTTON2_PRESSED_SIG};
                 TimeBomb::get_default_instance()->_post(&button2_pressed_event);
             } else { /* button 2 released */
-                static const Event button2_released_event = {BUTTON2_RELEASED_SIG};
+                static constexpr Event button2_released_event = {BUTTON2_RELEASED_SIG};
                 TimeBomb::get_default_instance()->_post(&button2_released_event);
             }
         }
