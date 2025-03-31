@@ -16,6 +16,8 @@ namespace BSP{
     void BSP_init_actuators() {
         get_default_onboard_led()->LED_init();
         get_blue_led()->LED_init();
+        get_red_led()->LED_init();
+        get_green_led()->LED_init();
     }
 
     void BSP_init_sensors() {
@@ -132,18 +134,18 @@ namespace BSP{
 
     }
 
-       LED* get_blue_led() {
-        static LED led(2);
+    LED* get_blue_led() {
+        static LED led(16);
         return &led;
     }
 
     LED* get_green_led() {
-        static LED led(13);
+        static LED led(17);
         return &led;
     }
 
     LED* get_red_led() {
-        static LED led(14);
+        static LED led(5);
         return &led;
     }
 

@@ -51,12 +51,12 @@ State TimeBomb::_wait_for_button(Event const * const e) {
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
-                BSP::BSP_blue_led_on();
+                BSP::BSP_green_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
-                BSP::BSP_blue_led_off();
+                BSP::BSP_green_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
@@ -82,14 +82,14 @@ State TimeBomb::_blink(Event const * const e) {
     switch (e->_sig) {
         case ENTRY_SIGNAL: {
                 printf("Enter blink\n");
-                BSP::BSP_blue_led_on();
+                BSP::BSP_red_led_on();
                 te->_arm((blink_time), 0U);
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
                 printf("Exit blink\n");
-                BSP::BSP_blue_led_off();
+                BSP::BSP_red_led_off();
                 status = HANDLED_STATUS;
                 break;
         }

@@ -14,7 +14,6 @@ int main()
 #endif
 {
     BSP::BSP_init();
-    BSP::BSP_LED_on();
 
     #ifdef ESP32
     Active::_run(TimeBomb::get_default_instance());
