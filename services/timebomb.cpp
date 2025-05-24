@@ -15,12 +15,14 @@ StateHandler boom = std::bind(&TimeBomb::_boom, TimeBomb::get_default_instance()
 StateHandler defused = std::bind(&TimeBomb::_defused, TimeBomb::get_default_instance(), std::placeholders::_1);
 
 
-TimeBomb::TimeBomb(): Active((initial)) {
+TimeBomb::TimeBomb(): Active((std::bind(&TimeBomb::_initial, this, std::placeholders::_1))) {
+    printf("Timebomb init\n");
     te = TimeEvent::get_default_instance(TIMEOUT_SIG, this);
     instance = this;
 }
 
 State TimeBomb::_initial(Event const* const e) {
+    printf("Initial state\n");
     return TRAN(wait_for_button);
 }
 
