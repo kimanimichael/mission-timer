@@ -1,7 +1,3 @@
-#ifdef ESP32
-#include "ESP32_fsm.h"
-#endif
-
 #include "bsp.h"
 #include "timebomb.h"
 
