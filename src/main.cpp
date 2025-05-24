@@ -1,7 +1,3 @@
-#ifdef ESP32
-#include "ESP32_fsm.h"
-#endif
-
 #include "bsp.h"
 #include "timebomb.h"
 
@@ -13,9 +9,10 @@ extern "C" void app_main(void)
 int main()
 #endif
 {
-    BSP::BSP_init();
+    BSP::init();
 
     #ifdef ESP32
+    TimeBomb::get_default_instance()->_priority = 1;
     Active::_run(TimeBomb::get_default_instance());
     #else
     #endif

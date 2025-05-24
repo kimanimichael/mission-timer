@@ -6,32 +6,35 @@ enum { blink_time = 2U };
 
 TimeBomb* TimeBomb::instance = nullptr;
 
-TimeBomb::TimeBomb(): Active((TimeBomb::initial_trampoline)) {
+StateHandler initial = std::bind(&TimeBomb::_initial, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler armed = std::bind(&TimeBomb::_armed, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler wait_for_button = std::bind(&TimeBomb::_wait_for_button, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler blink = std::bind(&TimeBomb::_blink, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler pause = std::bind(&TimeBomb::_pause, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler boom = std::bind(&TimeBomb::_boom, TimeBomb::get_default_instance(), std::placeholders::_1);
+StateHandler defused = std::bind(&TimeBomb::_defused, TimeBomb::get_default_instance(), std::placeholders::_1);
+
+
+TimeBomb::TimeBomb(): Active((std::bind(&TimeBomb::_initial, this, std::placeholders::_1))) {
+    printf("Timebomb init\n");
     te = TimeEvent::get_default_instance(TIMEOUT_SIG, this);
     instance = this;
 }
 
-State TimeBomb::initial_trampoline(Event const* const e) {
-    return instance->_initial(e);
-}
-
 State TimeBomb::_initial(Event const* const e) {
-    return TRAN(wait_for_button_trampoline);
-}
-
-State TimeBomb::armed_trampoline(Event const * const e) {
-    return instance->_armed(e);
+    printf("Initial state\n");
+    return TRAN(wait_for_button);
 }
 
 State TimeBomb ::_armed(Event const * const e) {
     State status;
     switch (e->_sig) {
         case BUTTON2_PRESSED_SIG: {
-                status = TRAN(defused_trampoline);
+                status = TRAN(defused);
                 break;
         }
         case INIT_SIGNAL: {
-                status = TRAN(initial_trampoline);
+                status = TRAN(initial);
                 break;
         }
         default: {
@@ -42,39 +45,32 @@ State TimeBomb ::_armed(Event const * const e) {
     return status;
 }
 
-State TimeBomb::wait_for_button_trampoline(Event const* const e) {
-    return instance->_wait_for_button(e);
-}
 
 State TimeBomb::_wait_for_button(Event const * const e) {
     State status;
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
-                BSP::BSP_green_led_on();
+                BSP::green_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
-                BSP::BSP_green_led_off();
+                BSP::green_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
         case BUTTON_PRESSED_SIG: {
                 blink_ctr = 3;
-                status = TRAN(blink_trampoline);
+                status = TRAN(blink);
                 break;
         }
         default: {
-                status = SUPER(armed_trampoline);
+                status = SUPER(armed);
                 break;
         }
     }
     return status;
-}
-
-State TimeBomb::blink_trampoline(Event const* const e) {
-    return instance->_blink(e);
 }
 
 State TimeBomb::_blink(Event const * const e) {
@@ -82,32 +78,28 @@ State TimeBomb::_blink(Event const * const e) {
     switch (e->_sig) {
         case ENTRY_SIGNAL: {
                 printf("Enter blink\n");
-                BSP::BSP_red_led_on();
-                te->_arm((blink_time), 0U);
+                BSP::red_led_on();
+                te->_arm(blink_time, 0U);
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
                 printf("Exit blink\n");
-                BSP::BSP_red_led_off();
+                BSP::red_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
         case TIMEOUT_SIG: {
                 printf("Timeout in blink\n");
-                status = TRAN(pause_trampoline);
+                status = TRAN(pause);
                 break;
         }
         default: {
-                status = SUPER(armed_trampoline);
+                status = SUPER(armed);
                 break;
         }
     }
     return status;
-}
-
-State TimeBomb::pause_trampoline(Event const* const e) {
-    return instance->_pause(e);
 }
 
 State TimeBomb::_pause(Event const * const e) {
@@ -115,7 +107,7 @@ State TimeBomb::_pause(Event const * const e) {
     switch (e->_sig) {
         case ENTRY_SIGNAL: {
                 printf("Enter pause\n");
-                te->_arm((blink_time), 0U);
+                te->_arm(blink_time, 0U);
                 status = HANDLED_STATUS;
                 break;
         }
@@ -123,22 +115,18 @@ State TimeBomb::_pause(Event const * const e) {
         case TIMEOUT_SIG: {
                 printf("Timeout in pause\n");
                 if (--blink_ctr > 0) {
-                    status = TRAN(blink_trampoline);
+                    status = TRAN(blink);
                 } else {
-                    status = TRAN(boom_trampoline);
+                    status = TRAN(boom);
                 }
                 break;
         }
         default: {
-                status = SUPER(armed_trampoline);
+                status = SUPER(armed);
                 break;
         }
     }
     return status;
-}
-
-State TimeBomb::boom_trampoline(Event const* const e) {
-    return instance->_boom(e);
 }
 
 State TimeBomb::_boom(Event const * const e) {
@@ -147,31 +135,27 @@ State TimeBomb::_boom(Event const * const e) {
 
         case ENTRY_SIGNAL: {
                 printf("Enter boom\n");
-                BSP::BSP_green_led_on();
-                BSP::BSP_red_led_on();
-                BSP::BSP_blue_led_on();
+                BSP::green_led_on();
+                BSP::red_led_on();
+                BSP::blue_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
 
         case EXIT_SIGNAL: {
                 printf("Exit boom\n");
-                BSP::BSP_green_led_off();
-                BSP::BSP_red_led_off();
-                BSP::BSP_blue_led_off();
+                BSP::green_led_off();
+                BSP::red_led_off();
+                BSP::blue_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
         default: {
-                status = SUPER(armed_trampoline);
+                status = SUPER(armed);
                 break;
         }
     }
     return status;
-}
-
-State TimeBomb::defused_trampoline(Event const* const e) {
-    return instance->_defused(e);
 }
 
 State TimeBomb::_defused(Event const * const e) {
@@ -179,17 +163,17 @@ State TimeBomb::_defused(Event const * const e) {
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
-                BSP::BSP_blue_led_on();
+                BSP::blue_led_on();
                 status = HANDLED_STATUS;
                 break;
         }
         case EXIT_SIGNAL: {
-                BSP::BSP_blue_led_off();
+                BSP::blue_led_off();
                 status = HANDLED_STATUS;
                 break;
         }
         case BUTTON2_PRESSED_SIG: {
-                status = TRAN(armed_trampoline);
+                status = TRAN(armed);
                 break;
         }
         default: {
