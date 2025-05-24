@@ -29,6 +29,6 @@ else ()
             "../services/"
             REQUIRES
             "driver"
-            "hsm"
+            "mk-hsm"
     )
 endif ()
