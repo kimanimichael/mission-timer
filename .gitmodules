@@ -1,0 +1,3 @@
+[submodule "mk-hsm"]
+	path = mk-hsm
+	url = git@github.com:kimanimichael/mk-hsm.git
