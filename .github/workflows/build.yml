@@ -25,6 +25,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Initialize and Update Submodules
+        run: |
+          git submodule update --init --force --depth=1
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -81,6 +85,10 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v4
+
+      - name: Initialize and Update Submodules
+        run: |
+          git submodule update --init --force --depth=1
 
       - name: Configure and build
         uses: espressif/esp-idf-ci-action@v1
