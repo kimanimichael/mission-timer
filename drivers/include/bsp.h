@@ -1,5 +1,7 @@
 #ifndef BSP_H_
 #define BSP_H_
+#include <button.h>
+
 #include "led.h"
 #include "hsm.h"
 
@@ -62,6 +64,11 @@ namespace BSP
     */
     void trigger_buttons_read();
     /**
+    * @brief Check status of trigger and defuse buttons
+    * @note Init sensors must have been called
+    */
+    void buttons_ticker_start();
+    /**
      * @brief blocking wait in line
      * @param ms no. of milliseconds to wait
      */
@@ -86,6 +93,16 @@ namespace BSP
     * @return pointer to red LED
     */
     LED* get_red_led();
+    /**
+    * @brief Get arming button  default instance
+    * @return pointer to arming button
+    */
+    Button* get_arming_button();
+    /**
+    * @brief Get trigger button default instance
+    * @return pointer to trigger button
+    */
+    Button* get_trigger_button();
 };
 
 /* Custom event signals. Extends from HSM signals */
