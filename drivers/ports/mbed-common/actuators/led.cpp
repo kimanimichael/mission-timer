@@ -1,25 +1,32 @@
-#include "led.h"
+#include "mbed_led.h"
 #include "mbed.h"
-#include "cstdio"
 
-LED::LED(const int pin) {
-    _pin = pin;
+MbedLED::MbedLED(const int pin):_pin(static_cast<PinName>(pin)) {
+
 }
 
-void LED::LED_init() const {
-    printf("LED init\n");
+void MbedLED::LED_init()  {
+    _led_state = 0;
+    _pin.write(_led_state);
 }
 
 
-void LED::LED_on() const{
-    DigitalOut onboard_led(static_cast<PinName>(_pin));
-    onboard_led.write(1);
-    printf("LED on\n");
+void MbedLED::LED_on(){
+    _led_state = 1;
+    _pin.write(_led_state);
 }
 
-void LED::LED_off() const{
-    DigitalInOut onboard_led(static_cast<PinName>(_pin));
-    onboard_led.output();
-    onboard_led.write(0);
-    printf("LED off\n");
+void MbedLED::LED_off() {
+    _led_state = 0;
+    _pin.write(_led_state);
 }
+
+void MbedLED::LED_toggle() {
+    _led_state = !_led_state;
+    _pin.write(_led_state);
+}
+
+void MbedLED::LED_write(const int value) {
+    _pin.write(value);
+}
+
