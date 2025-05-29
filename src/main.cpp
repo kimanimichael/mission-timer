@@ -11,10 +11,7 @@ int main()
 {
     BSP::init();
 
-    #ifdef ESP32
     TimeBomb::get_default_instance()->_priority = 1;
     Active::_run(TimeBomb::get_default_instance());
-    #else
-    #endif
 
 }
