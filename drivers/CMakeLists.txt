@@ -28,7 +28,9 @@ else ()
             INCLUDE_DIRS
             "./include"
             "./include/actuators"
+            "./include/sensors"
             "ports/ESP32/"
+            "ports/ESP32/actuators"
             "../services/"
             REQUIRES
             "driver"
