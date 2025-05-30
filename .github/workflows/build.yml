@@ -59,7 +59,7 @@ jobs:
 
       - name: Configure mbed-os
         run: |
-          mbed-tools configure -m NUCLEO_F429ZI -t GCC_ARM -o cmake-build/STM32F429ZI/mbed --mbed-os-path external/mbed-os
+          mbed-tools configure -m NUCLEO_F429ZI -t GCC_ARM -o cmake-build/STM32F429ZI/mbed --mbed-os-path external/mbed-os --app-config external/mbed_app.json
 
       - name: Configure and build
         run: |

@@ -1,6 +1,6 @@
-#include "led.h"
 #include "bsp.h"
 #include "ESP32_bsp.h"
+#include "ESP_led.h"
 #include "freertos/FreeRTOS.h"
 
 #include <cstdint>
@@ -43,7 +43,7 @@ namespace BSP{
 
 
     LED* get_default_onboard_led() {
-        static LED led(2);
+        static ESP_LED led(2);
         return &led;
     }
 
@@ -122,17 +122,17 @@ namespace BSP{
     }
 
     LED* get_blue_led() {
-        static LED led(16);
+        static ESP_LED led(16);
         return &led;
     }
 
     LED* get_green_led() {
-        static LED led(17);
+        static ESP_LED led(17);
         return &led;
     }
 
     LED* get_red_led() {
-        static LED led(5);
+        static ESP_LED led(5);
         return &led;
     }
 

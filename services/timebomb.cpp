@@ -4,8 +4,6 @@
 
 enum { blink_time = 2U };
 
-TimeBomb* TimeBomb::instance = nullptr;
-
 StateHandler initial = std::bind(&TimeBomb::_initial, TimeBomb::get_default_instance(), std::placeholders::_1);
 StateHandler armed = std::bind(&TimeBomb::_armed, TimeBomb::get_default_instance(), std::placeholders::_1);
 StateHandler wait_for_button = std::bind(&TimeBomb::_wait_for_button, TimeBomb::get_default_instance(), std::placeholders::_1);
@@ -18,11 +16,10 @@ StateHandler defused = std::bind(&TimeBomb::_defused, TimeBomb::get_default_inst
 TimeBomb::TimeBomb(): Active((std::bind(&TimeBomb::_initial, this, std::placeholders::_1))) {
     printf("Timebomb init\n");
     te = TimeEvent::get_default_instance(TIMEOUT_SIG, this);
-    instance = this;
 }
 
 State TimeBomb::_initial(Event const* const e) {
-    printf("Initial state\n");
+    printf("Initial TimeBomb state\n");
     return TRAN(wait_for_button);
 }
 
@@ -51,6 +48,7 @@ State TimeBomb::_wait_for_button(Event const * const e) {
     switch (e->_sig) {
 
         case ENTRY_SIGNAL: {
+                printf("Wait for button state\n");
                 BSP::green_led_on();
                 status = HANDLED_STATUS;
                 break;

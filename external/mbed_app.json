@@ -1,0 +1,28 @@
+{
+  "macros": [
+    "MBED_HEAP_STATS_ENABLED=1",
+    "DEBUG_ISR_STACK_USAGE=1",
+    "MBED_STACK_STATS_ENABLED=1",
+    "MBED_MEM_TRACING_ENABLED=1",
+    "MBED_THREAD_STATS_ENABLED=1"
+  ],
+  "config": {
+    "trace_level": {
+      "help": "Options are TRACE_LEVEL_ERROR,TRACE_LEVEL_WARN,TRACE_LEVEL_INFO,TRACE_LEVEL_DEBUG",
+      "macro_name": "MBED_TRACE_MAX_LEVEL",
+      "value": "TRACE_LEVEL_DEBUG"
+    }
+  },
+  "target_overrides": {
+    "*": {
+      "mbed-trace.enable": true,
+      "platform.stdio-baud-rate": 115200,
+      "platform.stdio-buffered-serial": true,
+      "platform.default-serial-baud-rate": 115200,
+      "target.printf_lib": "std",
+      "target.stdio_uart_tx": "PD_8",
+      "target.stdio_uart_rx": "PD_9",
+      "target.components_add": ["EVENTS"]
+    }
+  }
+}

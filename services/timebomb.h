@@ -1,7 +1,12 @@
 #ifndef SERVICES_TIMEBOMB_H
 #define SERVICES_TIMEBOMB_H
 
+
+#ifdef ESP32
 #include "ESP32_fsm.h"
+#else
+#include "mbed_hsm.h"
+#endif
 
 class TimeBomb: public Active {
 public:
@@ -63,7 +68,6 @@ public:
     uint32_t blink_ctr = {};
 private:
     /** Instance used for trampoline functions */ // @todo Find better solution to trampoline functions
-    static TimeBomb* instance;
 };
 
 #endif

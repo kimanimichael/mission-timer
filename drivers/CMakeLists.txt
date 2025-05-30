@@ -12,9 +12,12 @@ if (PLATFORM STREQUAL "mbed-os")
             ${CMAKE_CURRENT_SOURCE_DIR}/include/
             ${CMAKE_CURRENT_SOURCE_DIR}/include/actuators
             ${CMAKE_CURRENT_SOURCE_DIR}/include/sensors/
+            ${CMAKE_CURRENT_SOURCE_DIR}/ports/mbed-common/actuators/
+            ${CMAKE_CURRENT_SOURCE_DIR}/ports/mbed-common/sensors/
     )
     target_sources(drivers INTERFACE
             ${CMAKE_CURRENT_SOURCE_DIR}/ports/mbed-common/actuators/led.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/ports/mbed-common/sensors/mbed_button.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ports/mbed-common/bsp.cpp
     )
 else ()
@@ -25,7 +28,9 @@ else ()
             INCLUDE_DIRS
             "./include"
             "./include/actuators"
+            "./include/sensors"
             "ports/ESP32/"
+            "ports/ESP32/actuators"
             "../services/"
             REQUIRES
             "driver"

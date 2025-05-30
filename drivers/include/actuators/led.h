@@ -3,27 +3,33 @@
 
 class LED {
 public:
-    /**
-     *
-     * @param pin GPIO attached to pin
-     */
-    explicit LED(int pin);
+    virtual ~LED() = default;
     /**
      * @brief Board specific implementation of GPIO initialization
      */
-    void LED_init() const;
+    virtual void LED_init() = 0;
     /**
      * @brief Board specific implementation of GPIO high output
      */
-    void LED_on() const;
+    virtual void LED_on() = 0;
     /**
      * @brief Board specific implementation of GPIO low output
      */
-    void LED_off() const;
+    virtual void LED_off() = 0;
+    /**
+     * @brief Board specific implementation of GPIO toggle
+     */
+    virtual void LED_toggle() = 0;
+
+    /**
+     * @brief write high or low to an LED
+     * @param value 1 or 0
+     */
+    virtual void LED_write(int value) = 0;
 
 private:
     /** GPIO number to whom the LED is connected     */
-    int _pin;
+    int _pin = {};
 };
 
 #endif
