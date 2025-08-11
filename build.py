@@ -7,7 +7,10 @@ MBED_GEN_CMD = '''mbed-tools configure -m {MBED_TARGET} -t GCC_ARM -o cmake-buil
 
 ESP_IDF_DIR = '''$HOME/esp/'''
 
-CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM}'''
+CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM} -DIDF_TARGET=esp32s3'''
+ESP_CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM} -DIDF_TARGET=esp32s3'''
+STM32_CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM}'''
+
 CMAKE_BUILD_CMD = '''cmake --build cmake-build/{PORT}'''
 
 IMAGE_DIR = '''cmake-build/{PORT}/mission-timer.bin'''
@@ -36,6 +39,7 @@ def build_image(port, platform, mbed_target = DEFAULT_MBED_TARGET):
         print("ESP-IDF PLATFORM")
         print(colorama.Fore.CYAN, "Sourcing ESP-IDF environment" + colorama.Style.RESET_ALL)
         set_up_idf_env(ESP_IDF_DIR)
+        cmake_gen_command = ESP_CMAKE_GEN_CMD.format(PORT=port, PLATFORM=platform)
     elif platform == "mbed-os":
         print("MBED Platform")
         print(colorama.Fore.CYAN, "Generating mbed config files" + colorama.Style.RESET_ALL)
@@ -43,8 +47,8 @@ def build_image(port, platform, mbed_target = DEFAULT_MBED_TARGET):
         ret = os.system(" ".join(mbed_gen_command.split("\n")))
         if ret != 0:
             raise Exception("CMake generation failed!")
+        cmake_gen_command = STM32_CMAKE_GEN_CMD.format(PORT=port, PLATFORM=platform)
 
-    cmake_gen_command = CMAKE_GEN_CMD.format(PORT=port, PLATFORM=platform)
     cmake_build_command = CMAKE_BUILD_CMD.format(PORT=port, PLATFORM=platform)
     print(cmake_gen_command)
     ret = os.system(" ".join(cmake_gen_command.split("\n")))

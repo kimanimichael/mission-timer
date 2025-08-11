@@ -8,6 +8,7 @@ ESP_LED::ESP_LED(const int pin) {
 
 void ESP_LED::LED_init() {
     gpio_set_direction(static_cast<gpio_num_t>(_pin), GPIO_MODE_OUTPUT);
+    gpio_set_level(static_cast<gpio_num_t>(_pin), _pin_state);
     printf("LED init\n");
 }
 
