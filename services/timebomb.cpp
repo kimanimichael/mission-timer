@@ -15,6 +15,8 @@ StateHandler defused = std::bind(&TimeBomb::_defused, TimeBomb::get_default_inst
 
 TimeBomb::TimeBomb(): Active((std::bind(&TimeBomb::_initial, this, std::placeholders::_1))) {
     printf("Timebomb init\n");
+    _task_name = "TimeBomb";
+    _stack_size = 4096;
     te = TimeEvent::get_default_instance(TIMEOUT_SIG, this);
 }
 

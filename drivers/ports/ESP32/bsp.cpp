@@ -7,10 +7,13 @@
 #include "driver/gpio.h"
 #include "timebomb.h"
 
+constexpr unsigned int BUTTON_INTERVAL_MS = 50;
+
 namespace BSP{
     void init() {
         init_actuators();
         init_sensors();
+        init_hardware_timers();
     }
 
     void init_actuators() {
@@ -28,6 +31,10 @@ namespace BSP{
         gpio_set_pull_mode(GPIO_NUM_41, GPIO_PULLDOWN_ONLY);
     }
 
+    void init_hardware_timers() {
+        if (TimerHandle_t button_timer = xTimerCreate("ButtonTimer", pdMS_TO_TICKS(BUTTON_INTERVAL_MS), pdTRUE, nullptr, ESP_BSP::button_read); button_timer != nullptr) {
+            xTimerStart(button_timer, 0);
+        }
     }
 
 
