@@ -7,7 +7,7 @@ MBED_GEN_CMD = '''mbed-tools configure -m {MBED_TARGET} -t GCC_ARM -o cmake-buil
 
 ESP_IDF_DIR = '''$HOME/esp/'''
 
-CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM}'''
+CMAKE_GEN_CMD = '''cmake -S .  -B cmake-build/{PORT} -G Ninja -DPORT={PORT} -DPLATFORM={PLATFORM} -DIDF_TARGET=esp32s3'''
 CMAKE_BUILD_CMD = '''cmake --build cmake-build/{PORT}'''
 
 IMAGE_DIR = '''cmake-build/{PORT}/mission-timer.bin'''

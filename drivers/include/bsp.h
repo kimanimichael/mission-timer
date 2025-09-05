@@ -20,6 +20,10 @@ namespace BSP
     */
     void init_sensors();
     /**
+    * @brief Init hardware timers for periodic tasks
+    */
+    void init_hardware_timers();
+    /**
     * @brief Turn onboard LED ON
     * @note Init actuators must have been called
     */

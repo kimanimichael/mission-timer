@@ -7,10 +7,13 @@
 #include "driver/gpio.h"
 #include "timebomb.h"
 
+constexpr unsigned int BUTTON_INTERVAL_MS = 50;
+
 namespace BSP{
     void init() {
         init_actuators();
         init_sensors();
+        init_hardware_timers();
     }
 
     void init_actuators() {
@@ -21,11 +24,17 @@ namespace BSP{
     }
 
     void init_sensors() {
-        gpio_set_direction(GPIO_NUM_25, GPIO_MODE_INPUT);
-        gpio_set_pull_mode(GPIO_NUM_25, GPIO_PULLDOWN_ONLY);
+        gpio_set_direction(GPIO_NUM_42, GPIO_MODE_INPUT);
+        gpio_set_pull_mode(GPIO_NUM_42, GPIO_PULLDOWN_ONLY);
 
-        gpio_set_direction(GPIO_NUM_26, GPIO_MODE_INPUT);
-        gpio_set_pull_mode(GPIO_NUM_26, GPIO_PULLDOWN_ONLY);
+        gpio_set_direction(GPIO_NUM_41, GPIO_MODE_INPUT);
+        gpio_set_pull_mode(GPIO_NUM_41, GPIO_PULLDOWN_ONLY);
+    }
+
+    void init_hardware_timers() {
+        if (TimerHandle_t button_timer = xTimerCreate("ButtonTimer", pdMS_TO_TICKS(BUTTON_INTERVAL_MS), pdTRUE, nullptr, ESP_BSP::button_read); button_timer != nullptr) {
+            xTimerStart(button_timer, 0);
+        }
     }
 
 
@@ -81,8 +90,8 @@ namespace BSP{
             uint16_t previous;
         } button = {0U, 0U}, button2 = {0U, 0U};
 
-        button_status[0] = gpio_get_level(GPIO_NUM_25);
-        button_status[1] = gpio_get_level(GPIO_NUM_26);
+        button_status[0] = gpio_get_level(GPIO_NUM_42);
+        button_status[1] = gpio_get_level(GPIO_NUM_41);
 
         uint16_t tmp = button.depressed;
         uint16_t tmp2 = button2.depressed;
@@ -122,17 +131,17 @@ namespace BSP{
     }
 
     LED* get_blue_led() {
-        static ESP_LED led(16);
+        static ESP_LED led(47);
         return &led;
     }
 
     LED* get_green_led() {
-        static ESP_LED led(17);
+        static ESP_LED led(3);
         return &led;
     }
 
     LED* get_red_led() {
-        static ESP_LED led(5);
+        static ESP_LED led(48);
         return &led;
     }
 
